@@ -134,13 +134,18 @@ namespace flappybird1
 
 -----------------------------------------------------
 using System;
+using System.IO;
 
-namespace EpicBattle
+namespace EpicBattle2
 {
     class Program
     {
         static void Main(string[] args)
         {
+            string rootPath = @"C:\Users\opilane\samples\heroesandvillains\";
+            string[] heroes = GetDataFromFile(rootPath + "heroes.txt");
+            string[] weapones = GetDataFromFile(rootPath + "heroweapon.txt");
+            string[] villains = GetDataFromFile(rootPath + "villains.txt");
             string[] hero = { "Bambalbi", "Spider man", "Batman", "Doo-Skooby" };
             string[] enemy = { "Adolf", "Armagedon", "Broodmother", "Meepo", "Fucking slave", "Gachi Muchi" };
             string[] weapon = { "awp", "knife", "glock", "m4a1", "desert eagle", "Carbine Rifle", "Assault Rifle" };
@@ -157,7 +162,7 @@ namespace EpicBattle
         public static string GetRandomCharacter(string[] someArray)
         {
             return someArray[GetRandomIndexForArray(someArray)];
-        } 
+        }
         public static string GetWeapon(string[] weapon)
         {
             Random rnd = new Random();
@@ -168,7 +173,13 @@ namespace EpicBattle
         public static int GetRandomIndexForArray(string[] someArray)
         {
             Random rnd = new Random();
-            return rnd.Next(0, someArray.Length)
+            return rnd.Next(0, someArray.Length);
+        }
+
+        public static string[] GetDataFromFile(string filePath)
+        {
+            string[] dataFromFile = File.ReadAllLines(filePath);
+            return dataFromFile;
         }
     }
 }
