@@ -136,7 +136,7 @@ namespace flappybird1
 using System;
 using System.IO;
 
-namespace EpicBattle2
+namespace EpicBattle123
 {
     class Program
     {
@@ -149,14 +149,40 @@ namespace EpicBattle2
             string[] hero = { "Bambalbi", "Spider man", "Batman", "Doo-Skooby" };
             string[] enemy = { "Adolf", "Armagedon", "Broodmother", "Meepo", "Fucking slave", "Gachi Muchi" };
             string[] weapon = { "awp", "knife", "glock", "m4a1", "desert eagle", "Carbine Rifle", "Assault Rifle" };
+            string[] armor = GetDataFromFile(rootPath + "Armor.txt");
 
             string randomhero = GetRandomCharacter(hero);
             string randomenemy = GetRandomCharacter(enemy);
-            string randomweapon_hero = GetWeapon(weapon);
-            string randomweapon_enemy = GetWeapon(weapon);
+            string randomweapon_hero = GetRandomCharacter(weapon);
+            string randomweapon_enemy = GetRandomCharacter(weapon);
+            string heroArmor= GetRandomCharacter(armor);
+            string villainArmor = GetRandomCharacter(armor);
+            int heroHP = GenerateHP(heroArmor);
+            int villainHP = GenerateHP(villainArmor);
+
+            Console.WriteLine($"{heroArmor} gives {heroHP} HP.");
+            Console.WriteLine($"{villainArmor} gives {villainHP} HP.");
 
             Console.WriteLine($"Your random hero is {randomhero} and his weapon is {randomweapon_hero}");
             Console.WriteLine($"Your random enemy is {randomenemy} and his weapon is {randomweapon_enemy}");
+
+            while (heroHP >= 0 && villainHP >= 0)
+            {
+                heroHP = heroHP - Hit(randomenemy, randomweapon_enemy);
+                villainHP = villainHP - Hit(randomhero, randomweapon_hero);
+            }
+
+            if (heroHP > villainHP)
+            {
+                Console.WriteLine($"{randomhero} saves the day!");
+            }else if (heroHP < villainHP)
+            {
+                Console.WriteLine("Dark side wins!");
+            }
+            else
+            {
+                Console.WriteLine($"Both {randomhero} amd {randomenemy} dropped dead.");
+            }
 
         }
         public static string GetRandomCharacter(string[] someArray)
@@ -180,6 +206,25 @@ namespace EpicBattle2
         {
             string[] dataFromFile = File.ReadAllLines(filePath);
             return dataFromFile;
+        }
+        public static int GenerateHP(string armor)
+        {
+            return armor.Length;
+        }
+        public static int Hit(string character, string weapon)
+        {
+            Random rnd = new Random();
+            int strike =rnd.Next(0,weapon.Length - 2);
+            Console.WriteLine($"{character} hit {strike}.");
+
+            if (strike == 0)
+            {
+                Console.WriteLine($"Bad luck. {character} missed the target.");
+            }else if(strike == weapon.Length - 2)
+            {
+                Console.WriteLine($"Awesome! {character} made a criticial hit!");
+            }
+            return strike;
         }
     }
 }
